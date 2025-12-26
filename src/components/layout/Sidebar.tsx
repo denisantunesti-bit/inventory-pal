@@ -1,5 +1,5 @@
 import { NavLink, useLocation } from 'react-router-dom';
-import { Home, Package, Archive, UserPlus, Menu, X } from 'lucide-react';
+import { Home, Package, Archive, UserPlus, History, Menu, X } from 'lucide-react';
 import { useState } from 'react';
 import { cn } from '@/lib/utils';
 
@@ -8,6 +8,7 @@ const navItems = [
   { path: '/inventario', label: 'Inventário', icon: Package },
   { path: '/estoque', label: 'Estoque', icon: Archive },
   { path: '/cadastro', label: 'Cadastro', icon: UserPlus },
+  { path: '/historico', label: 'Histórico', icon: History },
 ];
 
 export function Sidebar() {
