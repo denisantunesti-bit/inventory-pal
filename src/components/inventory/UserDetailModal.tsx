@@ -7,7 +7,7 @@ import {
   DialogTitle,
 } from '@/components/ui/dialog';
 import { Badge } from '@/components/ui/badge';
-import { User as UserIcon, Mail, Building, Package } from 'lucide-react';
+import { User as UserIcon, Mail, Building, Package, Phone } from 'lucide-react';
 
 interface UserDetailModalProps {
   user: User | null;
@@ -57,6 +57,12 @@ export function UserDetailModal({ user, isOpen, onClose }: UserDetailModalProps)
                 <Mail className="w-4 h-4" />
                 <span>{user.email}</span>
               </div>
+              {user.extension && (
+                <div className="flex items-center gap-2 mt-1 text-sm text-muted-foreground">
+                  <Phone className="w-4 h-4" />
+                  <span>Ramal: {user.extension}</span>
+                </div>
+              )}
             </div>
           </div>
 

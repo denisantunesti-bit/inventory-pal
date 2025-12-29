@@ -15,13 +15,11 @@ import { toast } from 'sonner';
 import { Pencil, Trash2, Plus, X } from 'lucide-react';
 
 const departments = [
-  'Tecnologia',
-  'Marketing',
-  'Financeiro',
-  'RH',
-  'Comercial',
-  'Operações',
+  'Administrativo/RH',
   'Jurídico',
+  'Negocial_ITAÚ',
+  'TI',
+  'Outros',
 ];
 
 export function UserForm() {
@@ -32,10 +30,11 @@ export function UserForm() {
     name: '',
     email: '',
     department: '',
+    extension: '',
   });
 
   const resetForm = () => {
-    setFormData({ name: '', email: '', department: '' });
+    setFormData({ name: '', email: '', department: '', extension: '' });
     setIsEditing(null);
     setShowForm(false);
   };
@@ -63,6 +62,7 @@ export function UserForm() {
       name: user.name,
       email: user.email,
       department: user.department,
+      extension: user.extension || '',
     });
     setIsEditing(user.id);
     setShowForm(true);
@@ -127,6 +127,17 @@ export function UserForm() {
                 placeholder="email@empresa.com"
               />
             </div>
+            <div className="space-y-2">
+              <Label htmlFor="extension">Ramal</Label>
+              <Input
+                id="extension"
+                value={formData.extension}
+                onChange={(e) =>
+                  setFormData({ ...formData, extension: e.target.value })
+                }
+                placeholder="Ex: 1234"
+              />
+            </div>
           </div>
 
           <div className="space-y-2">
@@ -174,7 +185,7 @@ export function UserForm() {
             <div>
               <p className="font-medium">{user.name}</p>
               <p className="text-sm text-muted-foreground">
-                {user.department} • {user.email}
+                {user.department} • {user.email}{user.extension && ` • Ramal: ${user.extension}`}
               </p>
             </div>
             <div className="flex gap-2">
