@@ -73,6 +73,16 @@ export function EquipmentForm() {
       return;
     }
 
+    // Validar número de série único
+    const serialExists = equipments.some(
+      (eq) => eq.serialNumber.toLowerCase() === formData.serialNumber.toLowerCase() && eq.id !== isEditing
+    );
+
+    if (serialExists) {
+      toast.error('Já existe um equipamento com este número de série');
+      return;
+    }
+
     if (isEditing) {
       updateEquipment(isEditing, formData as Omit<Equipment, 'id' | 'createdAt'>);
       toast.success('Equipamento atualizado com sucesso!');
@@ -156,7 +166,7 @@ export function EquipmentForm() {
                 onChange={(e) =>
                   setFormData({ ...formData, serialNumber: e.target.value })
                 }
-                placeholder="Ex: MBP-2024-001"
+                placeholder="Ex: ABC123456789"
               />
             </div>
           </div>

@@ -113,11 +113,6 @@ export default function Login() {
           </CardContent>
         </Card>
 
-        {/* Nota de teste */}
-        <p className="text-center text-xs text-muted-foreground">
-          Para teste: usuário <span className="font-mono text-foreground">admin</span> / senha{' '}
-          <span className="font-mono text-foreground">admin</span>
-        </p>
       </div>
     </div>
   );

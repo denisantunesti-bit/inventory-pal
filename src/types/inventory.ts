@@ -13,6 +13,7 @@ export interface User {
   name: string;
   department: string;
   email: string;
+  extension?: string;
   avatar?: string;
   createdAt: string;
 }
