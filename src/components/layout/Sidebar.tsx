@@ -1,7 +1,8 @@
-import { NavLink, useLocation } from 'react-router-dom';
-import { Home, Package, Archive, UserPlus, History, Menu, X } from 'lucide-react';
+import { NavLink, useLocation, useNavigate } from 'react-router-dom';
+import { Home, Package, Archive, UserPlus, History, Menu, X, LogOut } from 'lucide-react';
 import { useState } from 'react';
 import { cn } from '@/lib/utils';
+import { useAuth } from '@/contexts/AuthContext';
 
 const navItems = [
   { path: '/', label: 'Início', icon: Home },
@@ -13,8 +14,14 @@ const navItems = [
 
 export function Sidebar() {
   const location = useLocation();
+  const navigate = useNavigate();
+  const { user, logout } = useAuth();
   const [isCollapsed, setIsCollapsed] = useState(false);
 
+  const handleLogout = () => {
+    logout();
+    navigate('/login');
+  };
   return (
     <aside
       className={cn(
@@ -65,13 +72,26 @@ export function Sidebar() {
       </nav>
 
       {/* Footer */}
-      {!isCollapsed && (
-        <div className="p-4 border-t border-sidebar-border">
-          <p className="text-xs text-sidebar-muted">
-            Sistema de Controle de Estoque
-          </p>
-        </div>
-      )}
+      <div className="p-4 border-t border-sidebar-border space-y-3">
+        {!isCollapsed && user && (
+          <div className="flex items-center gap-2 text-sm">
+            <div className="w-8 h-8 rounded-full bg-sidebar-accent flex items-center justify-center">
+              <span className="text-xs font-medium">{user.name.charAt(0)}</span>
+            </div>
+            <span className="text-sidebar-foreground truncate">{user.name}</span>
+          </div>
+        )}
+        <button
+          onClick={handleLogout}
+          className={cn(
+            'flex items-center gap-3 w-full px-3 py-2 rounded-lg text-sidebar-muted hover:text-red-400 hover:bg-red-500/10 transition-colors',
+            isCollapsed && 'justify-center px-0'
+          )}
+        >
+          <LogOut className="w-5 h-5 flex-shrink-0" />
+          {!isCollapsed && <span className="text-sm font-medium">Sair</span>}
+        </button>
+      </div>
     </aside>
   );
 }

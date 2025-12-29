@@ -18,6 +18,7 @@ import { cn } from '@/lib/utils';
 
 const equipmentTypes: EquipmentType[] = [
   'Notebook',
+  'Desktop',
   'Monitor',
   'Mouse',
   'Teclado',

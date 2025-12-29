@@ -11,7 +11,7 @@ import {
   TableRow,
 } from '@/components/ui/table';
 import { Search, History, Plus, Edit, Trash2, UserPlus, UserMinus, RefreshCw } from 'lucide-react';
-import { format } from 'date-fns';
+import { format, subDays, isAfter } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
 import { MovementType } from '@/types/movement';
 
@@ -28,12 +28,20 @@ export default function Historico() {
   const { movements } = useMovement();
   const [searchQuery, setSearchQuery] = useState('');
 
-  const filteredMovements = movements.filter(
-    (m) =>
+  // Filtrar movimentações dos últimos 15 dias
+  const fifteenDaysAgo = subDays(new Date(), 15);
+
+  const filteredMovements = movements.filter((m) => {
+    const movementDate = new Date(m.createdAt);
+    const isRecent = isAfter(movementDate, fifteenDaysAgo);
+    const matchesSearch =
       m.equipmentName.toLowerCase().includes(searchQuery.toLowerCase()) ||
       m.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      (m.userName && m.userName.toLowerCase().includes(searchQuery.toLowerCase()))
-  );
+      (m.userName && m.userName.toLowerCase().includes(searchQuery.toLowerCase())) ||
+      m.performedBy.toLowerCase().includes(searchQuery.toLowerCase());
+
+    return isRecent && matchesSearch;
+  });
 
   return (
     <div className="p-6 space-y-6 animate-fade-in">
@@ -41,7 +49,7 @@ export default function Historico() {
       <div>
         <h1 className="text-2xl font-bold text-foreground">Histórico de Movimentações</h1>
         <p className="text-muted-foreground mt-1">
-          Acompanhe todas as alterações realizadas nos equipamentos
+          Alterações realizadas nos últimos 15 dias
         </p>
       </div>
 
@@ -49,7 +57,7 @@ export default function Historico() {
       <div className="relative max-w-md">
         <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
         <Input
-          placeholder="Buscar por equipamento ou descrição..."
+          placeholder="Buscar por equipamento, descrição ou responsável..."
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
           className="pl-10"
@@ -61,7 +69,7 @@ export default function Historico() {
         <div className="flex flex-col items-center justify-center py-16 text-muted-foreground">
           <History className="w-12 h-12 mb-4 opacity-50" />
           <p className="text-lg font-medium">Nenhuma movimentação registrada</p>
-          <p className="text-sm">As alterações em equipamentos aparecerão aqui</p>
+          <p className="text-sm">As alterações dos últimos 15 dias aparecerão aqui</p>
         </div>
       ) : (
         <div className="border border-border rounded-lg overflow-hidden">
@@ -72,6 +80,7 @@ export default function Historico() {
                 <TableHead className="w-[140px]">Tipo</TableHead>
                 <TableHead>Equipamento</TableHead>
                 <TableHead>Descrição</TableHead>
+                <TableHead className="w-[150px]">Realizado por</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -93,6 +102,9 @@ export default function Historico() {
                     </TableCell>
                     <TableCell className="font-medium">{movement.equipmentName}</TableCell>
                     <TableCell className="text-muted-foreground">{movement.description}</TableCell>
+                    <TableCell className="font-medium text-primary">
+                      {movement.performedBy}
+                    </TableCell>
                   </TableRow>
                 );
               })}

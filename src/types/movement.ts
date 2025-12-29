@@ -16,5 +16,6 @@ export interface Movement {
   newValue?: string;
   userId?: string;
   userName?: string;
+  performedBy: string; // Nome do usuário logado que realizou a ação
   createdAt: string;
 }

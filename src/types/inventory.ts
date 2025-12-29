@@ -17,4 +17,4 @@ export interface User {
   createdAt: string;
 }
 
-export type EquipmentType = 'Notebook' | 'Monitor' | 'Mouse' | 'Teclado' | 'Headset' | 'Celular' | 'Tablet' | 'Outros';
+export type EquipmentType = 'Notebook' | 'Desktop' | 'Monitor' | 'Mouse' | 'Teclado' | 'Headset' | 'Celular' | 'Tablet' | 'Outros';
